@@ -2,13 +2,13 @@ package com.solvd.online.store.processing;
 
 import java.sql.Date;
 
-public class Payments {
+public class Payment {
     private int paymentId;
     private int userId;
     private String cardNumber;
     private Date expirationDate;
 
-    public Payments(int paymentId, int userId, String cardNumber, Date expirationDate) {
+    public Payment(int paymentId, int userId, String cardNumber, Date expirationDate) {
         this.paymentId = paymentId;
         this.userId = userId;
         this.cardNumber = cardNumber;

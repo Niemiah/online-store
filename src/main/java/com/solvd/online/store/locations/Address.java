@@ -1,6 +1,6 @@
 package com.solvd.online.store.locations;
 
-public class Addresses {
+public class Address {
     private int addressId;
     private String address;
     private String city;
@@ -8,7 +8,7 @@ public class Addresses {
     private String postalCode;
     private String country;
 
-    public Addresses(int addressId, String address, String city, String state, String postalCode, String country) {
+    public Address(int addressId, String address, String city, String state, String postalCode, String country) {
         this.addressId = addressId;
         this.address = address;
         this.city = city;
