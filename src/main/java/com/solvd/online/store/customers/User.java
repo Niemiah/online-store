@@ -1,12 +1,12 @@
 package com.solvd.online.store.customers;
 
-public class Users {
+public class User {
     private int userId;
     private String firstName;
     private String lastName;
     private String email;
 
-    public Users(int userId, String firstName, String lastName, String email) {
+    public User(int userId, String firstName, String lastName, String email) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
