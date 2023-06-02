@@ -1,4 +1,4 @@
-package com.solvd.online.store.addresses;
+package com.solvd.online.store.locations;
 
 public class Addresses {
     private int addressId;
@@ -39,5 +39,17 @@ public class Addresses {
 
     public String getCountry() {
         return country;
+    }
+
+    public void setAddressId(int addressId) {
+    }
+
+    public void setAddress(String address) {
+    }
+
+    public void setCity(String city) {
+    }
+
+    public void setState(String state) {
     }
 }
