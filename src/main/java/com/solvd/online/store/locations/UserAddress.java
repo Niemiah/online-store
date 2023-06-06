@@ -1,10 +1,10 @@
 package com.solvd.online.store.locations;
 
-public class UserHasAddresses {
+public class UserAddress {
     private int userId;
     private int addressId;
 
-    public UserHasAddresses(int userId, int addressId) {
+    public UserAddress(int userId, int addressId) {
         this.userId = userId;
         this.addressId = addressId;
     }

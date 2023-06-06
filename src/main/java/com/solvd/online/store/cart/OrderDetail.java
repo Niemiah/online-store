@@ -1,13 +1,13 @@
 package com.solvd.online.store.cart;
 
-public class OrderDetails {
+public class OrderDetail {
     private int orderId;
     private int productId;
     private int shippingId;
 
     private int quantity;
 
-    public OrderDetails(int orderId, int productId, int shippingId, int quantity) {
+    public OrderDetail(int orderId, int productId, int shippingId, int quantity) {
         this.orderId = orderId;
         this.productId = productId;
         this.shippingId = shippingId;

@@ -5,9 +5,9 @@ public class Product {
     private int productId;
     private String productName;
     private String productDescription;
-    private BigDecimal productPrice;
+    private double productPrice;
 
-    public Product(int productId, String productName, String productDescription, BigDecimal productPrice) {
+    public Product(int productId, String productName, String productDescription, double productPrice) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -26,7 +26,7 @@ public class Product {
         return productDescription;
     }
 
-    public BigDecimal getProductPrice() {
+    public double getProductPrice() {
         return productPrice;
     }
 
@@ -39,6 +39,6 @@ public class Product {
     public void setProductDescription(String productDescription) {
     }
 
-    public void setProductPrice(BigDecimal productPrice) {
+    public void setProductPrice(double productPrice) {
     }
 }

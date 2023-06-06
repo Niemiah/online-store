@@ -8,7 +8,7 @@ public class ShippingMethod {
     private BigDecimal shippingCost;
     private String shippingTime;
 
-    public ShippingMethod(int shippingId, String methodName, BigDecimal shippingCost, String shippingTime) {
+    public ShippingMethod(int shippingId, String methodName, double shippingCost, String shippingTime) {
         this.shippingId = shippingId;
         this.methodName = methodName;
         this.shippingCost = shippingCost;
