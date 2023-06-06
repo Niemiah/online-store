@@ -1,4 +1,5 @@
 package com.solvd.online.store.dao_implementation;
+import com.solvd.online.store.cart.OrderDetail;
 import com.solvd.online.store.merchandise.Category;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
@@ -67,6 +68,11 @@ public class CategoryDaoImpl extends JdbcDao<Category, Integer> {
     @Override
     protected void prepareStatementForDelete(PreparedStatement statement, Category category) throws SQLException {
         statement.setInt(1, category.getCategoryId());
+    }
+
+    @Override
+    public OrderDetail find(Integer orderId, Integer productId) {
+        return null;
     }
 
     @Override

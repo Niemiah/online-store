@@ -1,7 +1,5 @@
 package com.solvd.online.store.shipment;
 
-import java.math.BigDecimal;
-
 public class ShippingMethod {
     private int shippingId;
     private String methodName;
@@ -13,6 +11,10 @@ public class ShippingMethod {
         this.methodName = methodName;
         this.shippingCost = shippingCost;
         this.shippingTime = shippingTime;
+    }
+
+    public ShippingMethod() {
+
     }
 
     public int getShippingId() {
@@ -37,7 +39,7 @@ public class ShippingMethod {
     public void setMethodName(String methodName) {
     }
 
-    public void setShippingCost(BigDecimal shippingCost) {
+    public void setShippingCost(double shippingCost) {
     }
 
     public void setShippingTime(String shippingTime) {
