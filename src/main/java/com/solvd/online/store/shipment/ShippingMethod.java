@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class ShippingMethod {
     private int shippingId;
     private String methodName;
-    private BigDecimal shippingCost;
+    private double shippingCost;
     private String shippingTime;
 
     public ShippingMethod(int shippingId, String methodName, double shippingCost, String shippingTime) {
@@ -23,7 +23,7 @@ public class ShippingMethod {
         return methodName;
     }
 
-    public BigDecimal getShippingCost() {
+    public double getShippingCost() {
         return shippingCost;
     }
 
