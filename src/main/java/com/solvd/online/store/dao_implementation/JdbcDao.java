@@ -25,7 +25,4 @@ public abstract class JdbcDao<T, I extends Number> implements BaseDao<T> {
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T t) throws SQLException;
     protected abstract void prepareStatementForDelete(PreparedStatement statement, T t) throws SQLException;
 
-    public abstract OrderDetail find(Integer orderId, Integer productId);
-
-    public abstract User find(Integer id);
 }
