@@ -1,6 +1,8 @@
 package com.solvd.online.store.locations;
 
-public class Address {
+import com.solvd.online.store.customers.User;
+
+public class Address extends User {
     private int addressId;
     private String address;
     private String city;

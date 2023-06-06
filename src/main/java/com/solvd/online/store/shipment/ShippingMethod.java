@@ -1,6 +1,8 @@
 package com.solvd.online.store.shipment;
 
-public class ShippingMethod {
+import com.solvd.online.store.customers.User;
+
+public class ShippingMethod extends User {
     private int shippingId;
     private String methodName;
     private double shippingCost;

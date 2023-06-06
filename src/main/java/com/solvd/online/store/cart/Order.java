@@ -1,6 +1,8 @@
 package com.solvd.online.store.cart;
 
-public class Order {
+import com.solvd.online.store.customers.User;
+
+public class Order extends User {
     private int orderId;
     private int userId;
 

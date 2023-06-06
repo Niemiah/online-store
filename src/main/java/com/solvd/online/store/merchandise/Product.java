@@ -1,7 +1,9 @@
 package com.solvd.online.store.merchandise;
+import com.solvd.online.store.customers.User;
+
 import java.math.BigDecimal;
 
-public class Product {
+public class Product extends User {
     private int productId;
     private String productName;
     private String productDescription;
@@ -30,7 +32,7 @@ public class Product {
         return productDescription;
     }
 
-    public BigDecimal getProductPrice() {
+    public double getProductPrice() {
         return productPrice;
     }
 

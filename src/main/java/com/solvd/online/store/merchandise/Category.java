@@ -1,6 +1,8 @@
 package com.solvd.online.store.merchandise;
 
-public class Category {
+import com.solvd.online.store.customers.User;
+
+public class Category extends User {
     private int categoryId;
     private String categoryName;
 
