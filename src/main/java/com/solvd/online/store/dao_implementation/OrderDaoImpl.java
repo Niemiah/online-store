@@ -1,7 +1,7 @@
 package com.solvd.online.store.dao_implementation;
 import com.solvd.online.store.cart.Order;
 import com.solvd.online.store.cart.OrderDetail;
-import com.solvd.online.store.locations.Address;
+import com.solvd.online.store.customers.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -108,7 +108,7 @@ public class OrderDaoImpl extends JdbcDao<Order, Integer> {
     }
 
     @Override
-    public Address find(Integer id) {
+    public User find(Integer id) {
         Order order = null;
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindQuery())) {

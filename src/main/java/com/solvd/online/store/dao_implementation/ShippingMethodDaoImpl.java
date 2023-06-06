@@ -1,5 +1,5 @@
 package com.solvd.online.store.dao_implementation;
-import com.solvd.online.store.locations.Address;
+import com.solvd.online.store.customers.User;
 import com.solvd.online.store.shipment.ShippingMethod;
 import com.solvd.online.store.cart.OrderDetail;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -106,7 +106,12 @@ public class ShippingMethodDaoImpl extends JdbcDao<ShippingMethod, Integer> {
     }
 
     @Override
-    public Address find(Integer shippingId) {
+    public ShippingMethod find(int id) {
+        return null;
+    }
+
+    @Override
+    public User find(Integer shippingId) {
         ShippingMethod shippingMethod = null;
         try (PreparedStatement statement = getConnection().prepareStatement(getFindQuery())) {
             statement.setInt(1, shippingId);

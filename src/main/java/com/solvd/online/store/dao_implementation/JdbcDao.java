@@ -1,7 +1,7 @@
 package com.solvd.online.store.dao_implementation;
 import com.solvd.online.store.cart.OrderDetail;
+import com.solvd.online.store.customers.User;
 import com.solvd.online.store.dao_interface.BaseDao;
-import com.solvd.online.store.locations.Address;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,5 +27,5 @@ public abstract class JdbcDao<T, I extends Number> implements BaseDao<T> {
 
     public abstract OrderDetail find(Integer orderId, Integer productId);
 
-    public abstract Address find(Integer id);
+    public abstract User find(Integer id);
 }
