@@ -1,5 +1,6 @@
 package com.solvd.online.store.dao_implementation;
 import com.solvd.online.store.cart.OrderDetail;
+import com.solvd.online.store.locations.Address;
 import com.solvd.online.store.merchandise.Category;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
@@ -101,7 +102,12 @@ public class CategoryDaoImpl extends JdbcDao<Category, Integer> {
     }
 
     @Override
-    public Category find(Integer id) {
+    public Category find(int id) {
+        return null;
+    }
+
+    @Override
+    public Address find(Integer id) {
         Category category = null;
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindQuery())) {

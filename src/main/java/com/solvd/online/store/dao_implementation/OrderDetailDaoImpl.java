@@ -1,5 +1,6 @@
 package com.solvd.online.store.dao_implementation;
 import com.solvd.online.store.cart.OrderDetail;
+import com.solvd.online.store.locations.Address;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,7 +91,7 @@ public class OrderDetailDaoImpl extends JdbcDao<OrderDetail, Integer> {
     }
 
     @Override
-    public OrderDetail find(Integer integer) {
+    public Address find(Integer integer) {
         return null;
     }
 

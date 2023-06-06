@@ -1,12 +1,13 @@
 package com.solvd.online.store.dao_implementation;
 import com.solvd.online.store.cart.OrderDetail;
 import com.solvd.online.store.dao_interface.BaseDao;
+import com.solvd.online.store.locations.Address;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class JdbcDao<T, ID> implements BaseDao<T, ID> {
+public abstract class JdbcDao<T, I extends Number> implements BaseDao<T> {
     protected final BasicDataSource dataSource;
 
     public JdbcDao(BasicDataSource dataSource) {
@@ -25,4 +26,6 @@ public abstract class JdbcDao<T, ID> implements BaseDao<T, ID> {
     protected abstract void prepareStatementForDelete(PreparedStatement statement, T t) throws SQLException;
 
     public abstract OrderDetail find(Integer orderId, Integer productId);
+
+    public abstract Address find(Integer id);
 }

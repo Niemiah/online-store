@@ -1,4 +1,5 @@
 package com.solvd.online.store.dao_implementation;
+import com.solvd.online.store.locations.Address;
 import com.solvd.online.store.merchandise.Product;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -102,7 +103,7 @@ public class ProductDaoImpl extends JdbcDao<Product, Integer> {
     }
 
     @Override
-    public Product find(Integer id) {
+    public Address find(Integer id) {
         Product product = null;
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindQuery())) {

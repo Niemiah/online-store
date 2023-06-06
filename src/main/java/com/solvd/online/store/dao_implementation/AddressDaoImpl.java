@@ -111,6 +111,11 @@ public class AddressDaoImpl extends JdbcDao<Address, Integer> {
     }
 
     @Override
+    public Address find(int id) {
+        return null;
+    }
+
+    @Override
     public Address find(Integer addressId) {
         Address address = null;
         try (PreparedStatement statement = getConnection().prepareStatement(getFindQuery())) {
