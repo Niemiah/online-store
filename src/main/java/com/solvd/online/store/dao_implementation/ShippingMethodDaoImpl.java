@@ -1,5 +1,4 @@
 package com.solvd.online.store.dao_implementation;
-import com.solvd.online.store.dao_interface.ShippingMethodDao;
 import com.solvd.online.store.shipment.ShippingMethod;
 import java.util.ArrayList;
 import java.util.List;

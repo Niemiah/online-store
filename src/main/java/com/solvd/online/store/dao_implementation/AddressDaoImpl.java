@@ -1,5 +1,4 @@
 package com.solvd.online.store.dao_implementation;
-import com.solvd.online.store.dao_interface.AddressDao;
 import com.solvd.online.store.locations.Address;
 import java.util.ArrayList;
 import java.util.List;

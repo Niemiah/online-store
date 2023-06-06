@@ -9,6 +9,10 @@ public class Order {
         this.userId = userId;
     }
 
+    public Order() {
+
+    }
+
     public int getOrderId() {
         return orderId;
     }

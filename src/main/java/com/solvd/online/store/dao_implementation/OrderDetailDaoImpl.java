@@ -1,6 +1,6 @@
 package com.solvd.online.store.dao_implementation;
 import com.solvd.online.store.cart.OrderDetail;
-import com.solvd.online.store.dao_interface.OrderDetailDao;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,6 +9,10 @@ public class ProductCategory {
         this.categoryId = categoryId;
     }
 
+    public ProductCategory() {
+
+    }
+
     public int getProductId() {
         return productId;
     }
