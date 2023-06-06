@@ -32,7 +32,7 @@ public class Product extends User {
         return productDescription;
     }
 
-    public double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
