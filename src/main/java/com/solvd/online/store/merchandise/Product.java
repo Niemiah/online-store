@@ -33,7 +33,7 @@ public class Product extends User {
     }
 
     public BigDecimal getProductPrice() {
-        return productPrice;
+        return BigDecimal.valueOf(productPrice);
     }
 
     public void setProductId(int productId) {
