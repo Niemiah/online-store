@@ -83,11 +83,6 @@ public class AddressDaoImpl extends JdbcDao<Address, Integer> {
     }
 
     @Override
-    public OrderDetail find(Integer orderId, Integer productId) {
-        return null;
-    }
-
-    @Override
     public Address create(Address address) {
         try (PreparedStatement statement = getConnection().prepareStatement(getCreateQuery())) {
             prepareStatementForCreate(statement, address);
@@ -114,23 +109,6 @@ public class AddressDaoImpl extends JdbcDao<Address, Integer> {
     @Override
     public Address find(int id) {
         return null;
-    }
-
-    @Override
-    public User find(Integer addressId) {
-        Address address = null;
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindQuery())) {
-            statement.setInt(1, addressId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    address = mapRowToEntity(resultSet);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return address;
     }
 
     @Override
