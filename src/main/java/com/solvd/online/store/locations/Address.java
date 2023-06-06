@@ -17,6 +17,10 @@ public class Address {
         this.country = country;
     }
 
+    public Address() {
+
+    }
+
     public int getAddressId() {
         return addressId;
     }
@@ -51,5 +55,18 @@ public class Address {
     }
 
     public void setState(String state) {
+    }
+
+    public String getAddressLine1() {
+        return null;
+    }
+
+    public void setAddressLine1(String addressLine1) {
+    }
+
+    public void setPostalCode(String postalCode) {
+    }
+
+    public void setCountry(String country) {
     }
 }
