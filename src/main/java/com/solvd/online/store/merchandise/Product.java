@@ -30,7 +30,7 @@ public class Product {
         return productDescription;
     }
 
-    public double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 

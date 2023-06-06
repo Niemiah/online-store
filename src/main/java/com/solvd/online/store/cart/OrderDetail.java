@@ -14,6 +14,10 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
+    public OrderDetail() {
+
+    }
+
     public int getOrderId() {
         return orderId;
     }
