@@ -18,6 +18,7 @@ public class ProductCategory {
     }
 
     public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getCategoryId() {
@@ -25,6 +26,7 @@ public class ProductCategory {
     }
 
     public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
 }

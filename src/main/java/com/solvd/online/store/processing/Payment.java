@@ -32,14 +32,18 @@ public class Payment {
     }
 
     public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
     }
 
     public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

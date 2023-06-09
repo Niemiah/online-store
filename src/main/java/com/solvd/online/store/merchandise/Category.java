@@ -20,6 +20,7 @@ public class Category extends User {
     }
 
     public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getCategoryName() {
@@ -27,5 +28,6 @@ public class Category extends User {
     }
 
     public void setCategoryName(String categoryName) {
+        this.categoryName= categoryName;
     }
 }

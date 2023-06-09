@@ -36,14 +36,18 @@ public class ShippingMethod extends User {
     }
 
     public void setShippingId(int shippingId) {
+        this.shippingId = shippingId;
     }
 
     public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
     public void setShippingCost(double shippingCost) {
+        this.shippingCost = shippingCost;
     }
 
     public void setShippingTime(String shippingTime) {
+        this.shippingTime = shippingTime;
     }
 }

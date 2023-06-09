@@ -1,13 +1,11 @@
-package com.solvd.online.store.dao_implementation;
-import com.solvd.online.store.cart.OrderDetail;
-import com.solvd.online.store.customers.User;
-import com.solvd.online.store.dao_interface.BaseDao;
+package com.solvd.db.impl;
+import com.solvd.db.dao.DAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class JdbcDao<T, I extends Number> implements BaseDao<T> {
+public abstract class JdbcDao<T, I extends Number> implements DAO<T> {
     protected final BasicDataSource dataSource;
 
     public JdbcDao(BasicDataSource dataSource) {

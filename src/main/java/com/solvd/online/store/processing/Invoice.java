@@ -30,14 +30,18 @@ public class Invoice {
     }
 
     public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
     }
 }

@@ -1,6 +1,4 @@
-package com.solvd.online.store.dao_implementation;
-import com.solvd.online.store.cart.OrderDetail;
-import com.solvd.online.store.customers.User;
+package com.solvd.db.impl;
 import com.solvd.online.store.locations.Address;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.PreparedStatement;

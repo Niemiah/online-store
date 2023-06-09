@@ -1,9 +1,8 @@
-package com.solvd.online.store.dao_implementation;
+package com.solvd.db.impl;
 import com.solvd.online.store.cart.OrderDetail;
 import com.solvd.online.store.customers.User;
-import com.solvd.online.store.merchandise.Product;
+import com.solvd.online.store.merchandise.Category;
 import org.apache.commons.dbcp2.BasicDataSource;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,69 +12,63 @@ import java.util.List;
 
 import static com.solvd.online.store.ConnectionPool.getConnection;
 
-public class ProductDaoImpl extends JdbcDao<Product, Integer> {
-    public ProductDaoImpl(BasicDataSource dataSource) {
+public class CategoryDaoImpl extends JdbcDao<Category, Integer> {
+    public CategoryDaoImpl(BasicDataSource dataSource) {
         super(dataSource);
     }
 
     @Override
-    protected Product mapRowToEntity(ResultSet resultSet) throws SQLException {
-        Product product = new Product();
-        product.setProductId(resultSet.getInt("product_id"));
-        product.setProductName(resultSet.getString("product_name"));
-        product.setProductDescription(resultSet.getString("product_description"));
-        product.setProductPrice(resultSet.getBigDecimal("product_price"));
-        return product;
+    protected Category mapRowToEntity(ResultSet resultSet) throws SQLException {
+        Category category = new Category();
+        category.setCategoryId(resultSet.getInt("category_id"));
+        category.setCategoryName(resultSet.getString("category_name"));
+        return category;
     }
 
     @Override
     protected String getTableName() {
-        return "Products";
+        return "Categories";
     }
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO Products (product_name, product_description, product_price) VALUES (?, ?, ?)";
+        return "INSERT INTO Categories (category_name) VALUES (?)";
     }
 
     @Override
     protected String getFindQuery() {
-        return "SELECT * FROM Products WHERE product_id = ?";
+        return "SELECT * FROM Categories WHERE category_id = ?";
     }
 
     @Override
     protected String getFindAllQuery() {
-        return "SELECT * FROM Products";
+        return "SELECT * FROM Categories";
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE Products SET product_name = ?, product_description = ?, product_price = ? WHERE product_id = ?";
+        return "UPDATE Categories SET category_name = ? WHERE category_id = ?";
     }
 
     @Override
     protected String getDeleteQuery() {
-        return "DELETE FROM Products WHERE product_id = ?";
+        return "DELETE FROM Categories WHERE category_id = ?";
     }
 
     @Override
-    protected void prepareStatementForCreate(PreparedStatement statement, Product product) throws SQLException {
-        statement.setString(1, product.getProductName());
-        statement.setString(2, product.getProductDescription());
-        statement.setBigDecimal(3, product.getProductPrice());
+    protected void prepareStatementForCreate(PreparedStatement statement, Category category) throws SQLException {
+        statement.setString(1, category.getCategoryName());
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Product product) throws SQLException {
-        statement.setString(1, product.getProductName());
-        statement.setString(2, product.getProductDescription());
-        statement.setBigDecimal(3, product.getProductPrice());
-        statement.setInt(4, product.getProductId());
+    protected void prepareStatementForUpdate(PreparedStatement statement, Category category) throws SQLException {
+        statement.setString(1, category.getCategoryName());
+        statement.setInt(2, category.getCategoryId());
     }
 
     @Override
-    protected void prepareStatementForDelete(PreparedStatement statement, Product product) throws SQLException {
-        statement.setInt(1, product.getProductId());
+    protected void prepareStatementForDelete(PreparedStatement statement, Category category) throws SQLException {
+        statement.setInt(1, category.getCategoryId());
     }
 
     @Override
@@ -84,95 +77,95 @@ public class ProductDaoImpl extends JdbcDao<Product, Integer> {
     }
 
     @Override
-    public Product create(Product product) {
+    public Category create(Category category) {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getCreateQuery())) {
-            prepareStatementForCreate(statement, product);
+            prepareStatementForCreate(statement, category);
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Creating product failed, no rows affected.");
+                throw new SQLException("Creating category failed, no rows affected.");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    product.setProductId(generatedKeys.getInt(1));
+                    category.setCategoryId(generatedKeys.getInt(1));
                 } else {
-                    throw new SQLException("Creating product failed, no ID obtained.");
+                    throw new SQLException("Creating category failed, no ID obtained.");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return product;
+        return category;
     }
 
     @Override
-    public Product find(int id) {
+    public Category find(int id) {
         return null;
     }
 
     @Override
     public User find(Integer id) {
-        Product product = null;
+        Category category = null;
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindQuery())) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    product = mapRowToEntity(resultSet);
+                    category = mapRowToEntity(resultSet);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return product;
+        return category;
     }
 
     @Override
-    public List<Product> findAll() {
-        List<Product> products = new ArrayList<>();
+    public List<Category> findAll() {
+        List<Category> categories = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                products.add(mapRowToEntity(resultSet));
+                categories.add(mapRowToEntity(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return products;
+        return categories;
     }
 
     @Override
-    public Product update(Product product) {
+    public Category update(Category category) {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
-            prepareStatementForUpdate(statement, product);
+            prepareStatementForUpdate(statement, category);
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Updating product failed, no rows affected.");
+                throw new SQLException("Updating category failed, no rows affected.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return product;
+        return category;
     }
 
     @Override
-    public void delete(Product product) {
+    public void delete(Category category) {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
-            prepareStatementForDelete(statement, product);
+            prepareStatementForDelete(statement, category);
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Deleting product failed, no rows affected.");
+                throw new SQLException("Deleting category failed, no rows affected.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

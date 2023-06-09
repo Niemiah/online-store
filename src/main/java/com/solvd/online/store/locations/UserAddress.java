@@ -18,8 +18,10 @@ public class UserAddress {
     }
 
     public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 }

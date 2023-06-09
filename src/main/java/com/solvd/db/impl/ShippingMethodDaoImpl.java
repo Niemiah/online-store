@@ -1,4 +1,4 @@
-package com.solvd.online.store.dao_implementation;
+package com.solvd.db.impl;
 import com.solvd.online.store.customers.User;
 import com.solvd.online.store.shipment.ShippingMethod;
 import com.solvd.online.store.cart.OrderDetail;

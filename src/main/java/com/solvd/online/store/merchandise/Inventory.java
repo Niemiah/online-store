@@ -18,6 +18,7 @@ public class Inventory {
     }
 
     public void setInventoryId(int inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
     public int getCategoryId() {
@@ -25,6 +26,7 @@ public class Inventory {
     }
 
     public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getStock() {
@@ -32,6 +34,7 @@ public class Inventory {
     }
 
     public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public int getProductId() {
@@ -39,5 +42,6 @@ public class Inventory {
     }
 
     public void setProductId(int productId) {
+        this.productId = productId;
     }
 }

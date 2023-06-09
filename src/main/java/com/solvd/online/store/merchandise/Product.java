@@ -37,14 +37,18 @@ public class Product extends User {
     }
 
     public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 
     public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice.doubleValue();
     }
 }

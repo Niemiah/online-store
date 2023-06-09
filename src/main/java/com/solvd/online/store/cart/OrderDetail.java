@@ -35,14 +35,18 @@ public class OrderDetail {
     }
 
     public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public void setShippingId(int shippingId) {
+        this.shippingId = shippingId;
     }
 
     public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

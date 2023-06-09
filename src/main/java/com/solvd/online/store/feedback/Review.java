@@ -36,17 +36,22 @@ public class Review {
     }
 
     public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
     }
 
     public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
     }
 }
