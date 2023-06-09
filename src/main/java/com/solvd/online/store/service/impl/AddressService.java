@@ -4,6 +4,5 @@ import com.solvd.online.store.model.User;
 
 public class AddressService implements IAddressService {
     public void saveUserToDataBase(User user) {
-
     }
 }
