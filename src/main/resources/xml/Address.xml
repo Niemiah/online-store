@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Addresses>
+    <Address>
+        <addressId>1</addressId>
+        <address>234 Green Way</address>
+        <city>Denver</city>
+        <state>CO</state>
+        <postalCode>12121</postalCode>
+        <country>United States</country>
+    </Address>
+</Addresses>

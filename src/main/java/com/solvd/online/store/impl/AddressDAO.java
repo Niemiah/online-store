@@ -1,10 +1,9 @@
 package com.solvd.online.store.impl;
-import com.solvd.online.store.model.Address;
-import com.solvd.online.store.util.ConnectionPool;
 import com.solvd.online.store.dao.IAddressDAO;
+import com.solvd.online.store.model.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import com.solvd.online.store.util.ConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,8 +19,14 @@ public class AddressDAO implements IAddressDAO {
     @Override
     public void insert(Address address) {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection = connectionPool.getConnection();
+        Connection connection;
         PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
         if(address == null){
             LOGGER.error("Address Object is null.");
             throw new NullPointerException();
@@ -40,7 +45,9 @@ public class AddressDAO implements IAddressDAO {
             throw new RuntimeException(e);
         } finally {
             try {
-                preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (SQLException e) {
                 LOGGER.error("Unable to close Prepared Statement.");
                 throw new RuntimeException(e);
@@ -52,8 +59,14 @@ public class AddressDAO implements IAddressDAO {
     @Override
     public void update(Address address) {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection = connectionPool.getConnection();
+        Connection connection;
         PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
         if(address == null){
             LOGGER.error("Address Object is null.");
             throw new NullPointerException();
@@ -72,7 +85,9 @@ public class AddressDAO implements IAddressDAO {
             throw new RuntimeException(e);
         } finally {
             try {
-                preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (SQLException e) {
                 LOGGER.error("Unable to close Prepared Statement.");
                 throw new RuntimeException(e);
@@ -84,8 +99,14 @@ public class AddressDAO implements IAddressDAO {
     @Override
     public void deleteById(int id) {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection = connectionPool.getConnection();
+        Connection connection;
         PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
         try {
             preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, id);
@@ -95,7 +116,9 @@ public class AddressDAO implements IAddressDAO {
             throw new RuntimeException(e);
         } finally {
             try {
-                preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (SQLException e) {
                 LOGGER.error("Unable to close Prepared Statement.");
                 throw new RuntimeException(e);
@@ -108,9 +131,15 @@ public class AddressDAO implements IAddressDAO {
     public Address getById(int id) {
         Address address = new Address();
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection = connectionPool.getConnection();
+        Connection connection;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
         try {
             preparedStatement = connection.prepareStatement(GET);
             preparedStatement.setLong(1, id);
@@ -128,8 +157,12 @@ public class AddressDAO implements IAddressDAO {
             throw new RuntimeException(e);
         } finally {
             try {
-                preparedStatement.close();
-                resultSet.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 LOGGER.error("Unable to close resource.");
                 throw new RuntimeException(e);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Orders>
+    <Order>
+        <orderId>1</orderId>
+        <userId>1</userId>
+    </Order>
+</Orders>

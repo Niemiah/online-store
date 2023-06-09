@@ -1,175 +1,162 @@
 package com.solvd.online.store.impl;
 import com.solvd.online.store.model.Order;
-import com.solvd.online.store.model.OrderDetail;
-import com.solvd.online.store.model.User;
-import org.apache.commons.dbcp2.BasicDataSource;
-
+import com.solvd.online.store.util.ConnectionPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.solvd.online.store.dao.IOrderDAO;
 
-import static com.solvd.online.store.util.ConnectionPool.getConnection;
+public class OrderDAO implements IOrderDAO {
+    private final static Logger LOGGER = LogManager.getLogger(OrderDAO.class);
+    private static final String INSERT = "INSERT INTO Order (orderId, userId) VALUES (?,?)";
+    private static final String UPDATE = "UPDATE Order SET userId=? WHERE orderId=?";
+    private static final String DELETE = "DELETE FROM Order WHERE orderId=?";
+    private static final String GET = "SELECT * FROM Order WHERE orderId=?";
 
-public class OrderDAO extends JdbcDao<Order, Integer> {
-    public OrderDAO(BasicDataSource dataSource) {
-        super(dataSource);
+    @Override
+    public void insert(Order order) {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        if(order == null){
+            LOGGER.error("Order Object is null.");
+            throw new NullPointerException();
+        }
+        try {
+            preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setInt(1, order.getOrderId());
+            preparedStatement.setInt(2, order.getUserId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to execute Prepared Statement.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close Prepared Statement.");
+                throw new RuntimeException(e);
+            }
+            connectionPool.releaseConnection(connection);
+        }
     }
 
     @Override
-    protected Order mapRowToEntity(ResultSet resultSet) throws SQLException {
+    public void update(Order order) {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        if(order == null){
+            LOGGER.error("Order Object is null.");
+            throw new NullPointerException();
+        }
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setInt(1, order.getUserId());
+            preparedStatement.setInt(2, order.getOrderId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to execute Prepared Statement.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close Prepared Statement.");
+                throw new RuntimeException(e);
+            }
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        try {
+            preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to execute Prepared Statement.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close Prepared Statement.");
+                throw new RuntimeException(e);
+            }
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public Order getById(int id) {
         Order order = new Order();
-        order.setOrderId(resultSet.getInt("order_id"));
-        order.setUserId(resultSet.getInt("user_id"));
-        return order;
-    }
-
-    @Override
-    protected String getTableName() {
-        return "Orders";
-    }
-
-    @Override
-    protected String getCreateQuery() {
-        return "INSERT INTO Orders (user_id) VALUES (?)";
-    }
-
-    @Override
-    protected String getFindQuery() {
-        return "SELECT * FROM Orders WHERE order_id = ?";
-    }
-
-    @Override
-    protected String getFindAllQuery() {
-        return "SELECT * FROM Orders";
-    }
-
-    @Override
-    protected String getUpdateQuery() {
-        return "UPDATE Orders SET user_id = ? WHERE order_id = ?";
-    }
-
-    @Override
-    protected String getDeleteQuery() {
-        return "DELETE FROM Orders WHERE order_id = ?";
-    }
-
-    @Override
-    protected void prepareStatementForCreate(PreparedStatement statement, Order order) throws SQLException {
-        statement.setInt(1, order.getUserId());
-    }
-
-    @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Order order) throws SQLException {
-        statement.setInt(1, order.getUserId());
-        statement.setInt(2, order.getOrderId());
-    }
-
-    @Override
-    protected void prepareStatementForDelete(PreparedStatement statement, Order order) throws SQLException {
-        statement.setInt(1, order.getOrderId());
-    }
-
-    @Override
-    public OrderDetail find(Integer orderId, Integer productId) {
-        return null;
-    }
-
-    @Override
-    public Order create(Order order) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getCreateQuery())) {
-            prepareStatementForCreate(statement, order);
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating order failed, no rows affected.");
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        try {
+            preparedStatement = connection.prepareStatement(GET);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                order.setOrderId(resultSet.getInt("orderId"));
+                order.setUserId(resultSet.getInt("userId"));
             }
-
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    order.setOrderId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating order failed, no ID obtained.");
+        } catch (SQLException e) {
+            LOGGER.error("Unable to obtain resource.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
                 }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return order;
-    }
-
-    @Override
-    public Order find(int id) {
-        return null;
-    }
-
-    @Override
-    public User find(Integer id) {
-        Order order = null;
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getFindQuery())) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    order = mapRowToEntity(resultSet);
+                if (resultSet != null) {
+                    resultSet.close();
                 }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close resource.");
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
         }
-
         return order;
-    }
-
-    @Override
-    public List<Order> findAll() {
-        List<Order> orders = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                orders.add(mapRowToEntity(resultSet));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return orders;
-    }
-
-    @Override
-    public Order update(Order order) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
-            prepareStatementForUpdate(statement, order);
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Updating order failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return order;
-    }
-
-    @Override
-    public void delete(Order order) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
-            prepareStatementForDelete(statement, order);
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Deleting order failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

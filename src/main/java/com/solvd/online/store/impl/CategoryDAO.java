@@ -1,174 +1,162 @@
 package com.solvd.online.store.impl;
-import com.solvd.online.store.model.OrderDetail;
-import com.solvd.online.store.model.User;
 import com.solvd.online.store.model.Category;
-import org.apache.commons.dbcp2.BasicDataSource;
+import com.solvd.online.store.dao.ICategoryDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import com.solvd.online.store.util.ConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.solvd.online.store.util.ConnectionPool.getConnection;
+public class CategoryDAO implements ICategoryDAO {
+    private final static Logger LOGGER = LogManager.getLogger(CategoryDAO.class);
+    private static final String INSERT = "INSERT INTO Category (categoryId, categoryName) VALUES (?,?)";
+    private static final String UPDATE = "UPDATE Category SET categoryName=? WHERE categoryId=?";
+    private static final String DELETE = "DELETE FROM Category WHERE categoryId=?";
+    private static final String GET = "SELECT * FROM Category WHERE categoryId=?";
 
-public class CategoryDAO extends JdbcDao<Category, Integer> {
-    public CategoryDAO(BasicDataSource dataSource) {
-        super(dataSource);
+    @Override
+    public void insert(Category category) {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        if(category == null){
+            LOGGER.error("Category Object is null.");
+            throw new NullPointerException();
+        }
+        try {
+            preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setInt(1, category.getCategoryId());
+            preparedStatement.setString(2, category.getCategoryName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to execute Prepared Statement.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close Prepared Statement.");
+                throw new RuntimeException(e);
+            }
+            connectionPool.releaseConnection(connection);
+        }
     }
 
     @Override
-    protected Category mapRowToEntity(ResultSet resultSet) throws SQLException {
+    public void update(Category category) {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        if(category == null){
+            LOGGER.error("Category Object is null.");
+            throw new NullPointerException();
+        }
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, category.getCategoryName());
+            preparedStatement.setInt(2, category.getCategoryId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to execute Prepared Statement.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close Prepared Statement.");
+                throw new RuntimeException(e);
+            }
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        try {
+            preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to execute Prepared Statement.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close Prepared Statement.");
+                throw new RuntimeException(e);
+            }
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public Category getById(int id) {
         Category category = new Category();
-        category.setCategoryId(resultSet.getInt("category_id"));
-        category.setCategoryName(resultSet.getString("category_name"));
-        return category;
-    }
-
-    @Override
-    protected String getTableName() {
-        return "Categories";
-    }
-
-    @Override
-    protected String getCreateQuery() {
-        return "INSERT INTO Categories (category_name) VALUES (?)";
-    }
-
-    @Override
-    protected String getFindQuery() {
-        return "SELECT * FROM Categories WHERE category_id = ?";
-    }
-
-    @Override
-    protected String getFindAllQuery() {
-        return "SELECT * FROM Categories";
-    }
-
-    @Override
-    protected String getUpdateQuery() {
-        return "UPDATE Categories SET category_name = ? WHERE category_id = ?";
-    }
-
-    @Override
-    protected String getDeleteQuery() {
-        return "DELETE FROM Categories WHERE category_id = ?";
-    }
-
-    @Override
-    protected void prepareStatementForCreate(PreparedStatement statement, Category category) throws SQLException {
-        statement.setString(1, category.getCategoryName());
-    }
-
-    @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Category category) throws SQLException {
-        statement.setString(1, category.getCategoryName());
-        statement.setInt(2, category.getCategoryId());
-    }
-
-    @Override
-    protected void prepareStatementForDelete(PreparedStatement statement, Category category) throws SQLException {
-        statement.setInt(1, category.getCategoryId());
-    }
-
-    @Override
-    public OrderDetail find(Integer orderId, Integer productId) {
-        return null;
-    }
-
-    @Override
-    public Category create(Category category) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getCreateQuery())) {
-            prepareStatementForCreate(statement, category);
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating category failed, no rows affected.");
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to get connection from pool.", e);
+            throw new RuntimeException(e);
+        }
+        try {
+            preparedStatement = connection.prepareStatement(GET);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                category.setCategoryId(resultSet.getInt("categoryId"));
+                category.setCategoryName(resultSet.getString("categoryName"));
             }
-
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    category.setCategoryId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating category failed, no ID obtained.");
+        } catch (SQLException e) {
+            LOGGER.error("Unable to obtain resource.");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
                 }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return category;
-    }
-
-    @Override
-    public Category find(int id) {
-        return null;
-    }
-
-    @Override
-    public User find(Integer id) {
-        Category category = null;
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getFindQuery())) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    category = mapRowToEntity(resultSet);
+                if (resultSet != null) {
+                    resultSet.close();
                 }
+            } catch (SQLException e) {
+                LOGGER.error("Unable to close resource.");
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
         }
-
         return category;
-    }
-
-    @Override
-    public List<Category> findAll() {
-        List<Category> categories = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                categories.add(mapRowToEntity(resultSet));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return categories;
-    }
-
-    @Override
-    public Category update(Category category) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
-            prepareStatementForUpdate(statement, category);
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Updating category failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return category;
-    }
-
-    @Override
-    public void delete(Category category) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
-            prepareStatementForDelete(statement, category);
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Deleting category failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
