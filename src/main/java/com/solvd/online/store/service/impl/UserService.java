@@ -5,8 +5,28 @@ import com.solvd.online.store.model.User;
 import com.solvd.online.store.service.IUserService;
 
 public class UserService implements IUserService {
+
+    @Override
     public void saveUserToDataBase(User user) {
-        IUserDAO userDAO =  new UserDAO();
-        //UserDAO.insert(user);
+        IUserDAO userDao = new UserDAO();
+        userDao.insert(user);
+    }
+
+    @Override
+    public void saveUserToDB(User user) {
+        IUserDAO userDao = new UserDAO();
+        userDao.insert(user);
+    }
+
+    @Override
+    public void updateUserInDB(User user) {
+        IUserDAO userDao = new UserDAO();
+        userDao.update(user);
+    }
+
+    @Override
+    public User getUserInDB(int id) {
+        IUserDAO userDao = new UserDAO();
+        return userDao.getById(id);
     }
 }
