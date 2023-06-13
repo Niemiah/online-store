@@ -15,6 +15,10 @@ public class Payment {
         this.expirationDate = expirationDate;
     }
 
+    public Payment() {
+
+    }
+
     public int getPaymentId() {
         return paymentId;
     }

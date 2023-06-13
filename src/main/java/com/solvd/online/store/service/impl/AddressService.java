@@ -23,4 +23,14 @@ public class AddressService implements IAddressService {
         IAddressDAO addressDAO = new AddressDAO();
         return addressDAO.getById(id);
     }
+
+    @Override
+    public void deleteAddressFromDB(int id) {
+
+    }
+
+    @Override
+    public String getAllAddressesFromDB() {
+        return null;
+    }
 }
