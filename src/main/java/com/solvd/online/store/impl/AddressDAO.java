@@ -18,21 +18,13 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public void insert(Address address) {
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("Unable to get connection from pool.", e);
-            throw new RuntimeException(e);
-        }
         if(address == null){
             LOGGER.error("Address Object is null.");
             throw new NullPointerException();
         }
-        try {
-            preparedStatement = connection.prepareStatement(INSERT);
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+
             preparedStatement.setInt(1, address.getAddressId());
             preparedStatement.setString(2, address.getAddress());
             preparedStatement.setString(3, address.getCity());
@@ -40,39 +32,22 @@ public class AddressDAO implements IAddressDAO {
             preparedStatement.setString(5, address.getPostalCode());
             preparedStatement.setString(6, address.getCountry());
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.");
+            LOGGER.error("Unable to execute Prepared Statement.", e);
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Unable to close Prepared Statement.");
-                throw new RuntimeException(e);
-            }
-            connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
     public void update(Address address) {
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("Unable to get connection from pool.", e);
-            throw new RuntimeException(e);
-        }
         if(address == null){
             LOGGER.error("Address Object is null.");
             throw new NullPointerException();
         }
-        try {
-            preparedStatement = connection.prepareStatement(UPDATE);
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+
             preparedStatement.setString(1, address.getAddress());
             preparedStatement.setString(2, address.getCity());
             preparedStatement.setString(3, address.getState());
@@ -80,94 +55,50 @@ public class AddressDAO implements IAddressDAO {
             preparedStatement.setString(5, address.getCountry());
             preparedStatement.setInt(6, address.getAddressId());
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.");
+            LOGGER.error("Unable to execute Prepared Statement.", e);
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Unable to close Prepared Statement.");
-                throw new RuntimeException(e);
-            }
-            connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
     public void deleteById(int id) {
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("Unable to get connection from pool.", e);
-            throw new RuntimeException(e);
-        }
-        try {
-            preparedStatement = connection.prepareStatement(DELETE);
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.");
+            LOGGER.error("Unable to execute Prepared Statement.", e);
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Unable to close Prepared Statement.");
-                throw new RuntimeException(e);
-            }
-            connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
     public Address getById(int id) {
         Address address = new Address();
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("Unable to get connection from pool.", e);
-            throw new RuntimeException(e);
-        }
-        try {
-            preparedStatement = connection.prepareStatement(GET);
+
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
+
             preparedStatement.setLong(1, id);
-            resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                address.setAddressId(resultSet.getInt("addressId"));
-                address.setAddress(resultSet.getString("address"));
-                address.setCity(resultSet.getString("city"));
-                address.setState(resultSet.getString("state"));
-                address.setPostalCode(resultSet.getString("postalCode"));
-                address.setCountry(resultSet.getString("country"));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()){
+                    address.setAddressId(resultSet.getInt("addressId"));
+                    address.setAddress(resultSet.getString("address"));
+                    address.setCity(resultSet.getString("city"));
+                    address.setState(resultSet.getString("state"));
+                    address.setPostalCode(resultSet.getString("postalCode"));
+                    address.setCountry(resultSet.getString("country"));
+                }
             }
+
         } catch (SQLException e) {
-            LOGGER.error("Unable to obtain resource.");
+            LOGGER.error("Unable to obtain resource.", e);
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Unable to close resource.");
-                throw new RuntimeException(e);
-            }
-            connectionPool.releaseConnection(connection);
         }
         return address;
     }

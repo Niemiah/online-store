@@ -1,11 +1,11 @@
-package com.solvd.online.store.parser;
-import com.solvd.online.store.model.Order;
+package com.solvd.online.store.util.parser;
+import com.solvd.online.store.model.Category;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class OrderHandler extends DefaultHandler {
-    private Order order;
+public class CategoryHandler extends DefaultHandler {
+    private Category category;
     private String currentElement = "";
 
     @Override
@@ -21,11 +21,11 @@ public class OrderHandler extends DefaultHandler {
         }
 
         switch (currentElement) {
-            case "orderId":
-                order.setOrderId(Integer.parseInt(value));
+            case "categoryId":
+                category.setCategoryId(Integer.parseInt(value));
                 break;
-            case "userId":
-                order.setUserId(Integer.parseInt(value));
+            case "categoryName":
+                category.setCategoryName(value);
                 break;
             default:
                 break;

@@ -1,7 +1,12 @@
 package com.solvd.online.store.model;
+import javax.xml.bind.annotation.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Category")
 public class Category extends User {
+    @XmlElement
     private int categoryId;
+    @XmlElement
     private String categoryName;
 
     public Category(int categoryId, String categoryName) {
@@ -10,7 +15,6 @@ public class Category extends User {
     }
 
     public Category() {
-
     }
 
     public int getCategoryId() {

@@ -8,25 +8,25 @@ public class UserService implements IUserService {
 
     @Override
     public void saveUserToDataBase(User user) {
-        IUserDAO userDao = new UserDAO();
-        userDao.insert(user);
+        IUserDAO userDAO = new UserDAO();
+        userDAO.insert(user);
     }
 
     @Override
     public void saveUserToDB(User user) {
-        IUserDAO userDao = new UserDAO();
-        userDao.insert(user);
+        IUserDAO userDAO = new UserDAO();
+        userDAO.insert(user);
     }
 
     @Override
     public void updateUserInDB(User user) {
-        IUserDAO userDao = new UserDAO();
-        userDao.update(user);
+        IUserDAO userDAO = new UserDAO();
+        userDAO.update(user);
     }
 
     @Override
     public User getUserInDB(int id) {
-        IUserDAO userDao = new UserDAO();
-        return userDao.getById(id);
+        IUserDAO userDAO = new UserDAO();
+        return userDAO.getById(id);
     }
 }

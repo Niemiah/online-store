@@ -8,19 +8,19 @@ public class AddressService implements IAddressService {
 
     @Override
     public void saveAddressToDB(Address address) {
-        IAddressDAO addressDao = new AddressDAO();
-        addressDao.insert(address);
+        IAddressDAO addressDAO = new AddressDAO();
+        addressDAO.insert(address);
     }
 
     @Override
     public void updateAddressInDB(Address address) {
-        IAddressDAO addressDao = new AddressDAO();
-        addressDao.update(address);
+        IAddressDAO addressDAO = new AddressDAO();
+        addressDAO.update(address);
     }
 
     @Override
     public Address getAddressInDB(int id) {
-        IAddressDAO addressDao = new AddressDAO();
-        return addressDao.getById(id);
+        IAddressDAO addressDAO = new AddressDAO();
+        return addressDAO.getById(id);
     }
 }

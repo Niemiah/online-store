@@ -9,19 +9,19 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public void saveCategoryToDB(Category category) {
-        ICategoryDAO categoryDao = new CategoryDAO();
-        categoryDao.insert(category);
+        ICategoryDAO categoryDAO = new CategoryDAO();
+        categoryDAO.insert(category);
     }
 
     @Override
     public void updateCategoryInDB(Category category) {
-        ICategoryDAO categoryDao = new CategoryDAO();
-        categoryDao.update(category);
+        ICategoryDAO categoryDAO = new CategoryDAO();
+        categoryDAO.update(category);
     }
 
     @Override
     public Category getCategoryInDB(int id) {
-        ICategoryDAO categoryDao = new CategoryDAO();
-        return categoryDao.getById(id);
+        ICategoryDAO categoryDAO = new CategoryDAO();
+        return categoryDAO.getById(id);
     }
 }

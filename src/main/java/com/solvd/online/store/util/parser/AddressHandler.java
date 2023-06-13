@@ -1,4 +1,4 @@
-package com.solvd.online.store.parser;
+package com.solvd.online.store.util.parser;
 import com.solvd.online.store.model.Address;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

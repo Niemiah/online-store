@@ -9,19 +9,19 @@ public class OrderDetailService implements IOrderDetailService {
 
     @Override
     public void saveOrderDetailToDB(OrderDetail orderDetail) {
-        IOrderDetailDAO orderDetailDao = new OrderDetailDAO();
-        orderDetailDao.insert(orderDetail);
+        IOrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        orderDetailDAO.insert(orderDetail);
     }
 
     @Override
     public void updateOrderDetailInDB(OrderDetail orderDetail) {
-        IOrderDetailDAO orderDetailDao = new OrderDetailDAO();
-        orderDetailDao.update(orderDetail);
+        IOrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        orderDetailDAO.update(orderDetail);
     }
 
     @Override
     public OrderDetail getOrderDetailInDB(int id) {
-        IOrderDetailDAO orderDetailDao = new OrderDetailDAO();
-        return orderDetailDao.getById(id);
+        IOrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        return orderDetailDAO.getById(id);
     }
 }
