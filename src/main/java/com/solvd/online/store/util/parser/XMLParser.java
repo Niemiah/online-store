@@ -10,19 +10,19 @@ import java.io.File;
 public class XMLParser {
     public static void main(String[] args) {
         try {
-            File addressesFile = new File("C:\\Users\\color\\online-store\\src\\main\\resources\\xml\\Address.xml");
+            File addressesFile = new File("Address.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(Addresses.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             Addresses addresses = (Addresses) jaxbUnmarshaller.unmarshal(addressesFile);
             System.out.println(addresses.getAddresses().get(0).getAddress());
 
-            File categoriesFile = new File("C:\\Users\\color\\online-store\\src\\main\\resources\\xml\\Category.xml");
+            File categoriesFile = new File("Category.xml");
             jaxbContext = JAXBContext.newInstance(Categories.class);
             jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             Categories categories = (Categories) jaxbUnmarshaller.unmarshal(categoriesFile);
             System.out.println(categories.getCategories().get(0).getCategoryName());
 
-            File ordersFile = new File("C:\\Users\\color\\online-store\\src\\main\\resources\\xml\\Order.xml");
+            File ordersFile = new File("Order.xml");
             jaxbContext = JAXBContext.newInstance(Orders.class);
             jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             Orders orders = (Orders) jaxbUnmarshaller.unmarshal(ordersFile);
