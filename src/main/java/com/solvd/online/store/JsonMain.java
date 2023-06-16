@@ -22,7 +22,7 @@ public class JsonMain {
         // Create StoreData object
         JsonData jsonData = new JsonData(address, payment, invoice, inventory, review);
 
-        // Now, write the objects to a single JSON file
+        // Write the objects to a single JSON file
         mapper.writeValue(new File("JsonData.json"), jsonData);
     }
 }
