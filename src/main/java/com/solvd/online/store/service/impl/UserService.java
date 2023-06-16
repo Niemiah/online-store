@@ -13,7 +13,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void saveUserToDataBase(User user) {
+    public void saveUserToDB(User user) {
         userDAO.insert(user);
     }
 
@@ -26,7 +26,7 @@ public class UserService implements IUserService {
     public User getUserInDB(int id) {
         return userDAO.getById(id);
     }
-}
+
     @Override
     public String getAllUsersFromDB() {
         return null;
