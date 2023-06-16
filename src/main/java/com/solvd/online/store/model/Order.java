@@ -1,21 +1,29 @@
 package com.solvd.online.store.model;
+import java.util.*;
 import javax.xml.bind.annotation.*;
 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "Order")
-public class Order extends User {
+public class Order {
     @XmlElement
     private int orderId;
     @XmlElement
     private int userId;
+    @XmlElementWrapper(name = "orderDetails")
+    @XmlElement(name = "orderDetail")
+    private List<OrderDetail> orderDetails;
+
+    public Order() {
+        this.orderDetails = new ArrayList<>();
+    }
 
     public Order(int orderId, int userId) {
         this.orderId = orderId;
         this.userId = userId;
+        this.orderDetails = new ArrayList<>();
     }
 
-    public Order() {
-    }
+    // Getters and setters
 
     public int getOrderId() {
         return orderId;
@@ -31,5 +39,13 @@ public class Order extends User {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

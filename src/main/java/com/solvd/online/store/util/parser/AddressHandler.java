@@ -11,6 +11,7 @@ public class AddressHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         currentElement = qName;
+        address = new Address(); // Initialize the address object
     }
 
     @Override

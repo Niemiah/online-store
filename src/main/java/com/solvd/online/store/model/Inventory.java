@@ -1,17 +1,24 @@
 package com.solvd.online.store.model;
+import com.fasterxml.jackson.annotation.*;
 
 public class Inventory {
+    @JsonProperty
     private int inventoryId;
-    private int categoryId;
-    private int stock;
+    @JsonProperty
     private int productId;
+    @JsonProperty
+    private int stock;
 
-    public Inventory(int inventoryId, int categoryId, int stock, int productId) {
-        this.inventoryId = inventoryId;
-        this.categoryId = categoryId;
-        this.stock = stock;
-        this.productId = productId;
+    public Inventory() {
     }
+
+    public Inventory(int inventoryId, int productId, int stock) {
+        this.inventoryId = inventoryId;
+        this.productId = productId;
+        this.stock = stock;
+    }
+
+    // Getters and setters
 
     public int getInventoryId() {
         return inventoryId;
@@ -21,12 +28,12 @@ public class Inventory {
         this.inventoryId = inventoryId;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getStock() {
@@ -35,13 +42,5 @@ public class Inventory {
 
     public void setStock(int stock) {
         this.stock = stock;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 }

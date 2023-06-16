@@ -1,21 +1,22 @@
 package com.solvd.online.store.model;
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "Address")
-public class Address extends User {
-    @XmlElement
+public class Address {
+    @JsonProperty
     private int addressId;
-    @XmlElement
+    @JsonProperty
     private String address;
-    @XmlElement
+    @JsonProperty
     private String city;
-    @XmlElement
+    @JsonProperty
     private String state;
-    @XmlElement
+    @JsonProperty
     private String postalCode;
-    @XmlElement
+    @JsonProperty
     private String country;
+
+    public Address() {
+    }
 
     public Address(int addressId, String address, String city, String state, String postalCode, String country) {
         this.addressId = addressId;
@@ -26,8 +27,7 @@ public class Address extends User {
         this.country = country;
     }
 
-    public Address() {
-    }
+    // Getters and setters
 
     public int getAddressId() {
         return addressId;

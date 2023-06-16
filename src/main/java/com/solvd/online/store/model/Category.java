@@ -1,21 +1,29 @@
 package com.solvd.online.store.model;
+import java.util.*;
 import javax.xml.bind.annotation.*;
 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "Category")
-public class Category extends User {
+public class Category {
     @XmlElement
     private int categoryId;
     @XmlElement
     private String categoryName;
+    @XmlElementWrapper(name = "products")
+    @XmlElement(name = "product")
+    private List<Product> products;
+
+    public Category() {
+        this.products = new ArrayList<>();
+    }
 
     public Category(int categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+        this.products = new ArrayList<>();
     }
 
-    public Category() {
-    }
+    // Getters and setters
 
     public int getCategoryId() {
         return categoryId;
@@ -30,6 +38,14 @@ public class Category extends User {
     }
 
     public void setCategoryName(String categoryName) {
-        this.categoryName= categoryName;
+        this.categoryName = categoryName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

@@ -1,5 +1,6 @@
 package com.solvd.online.store.writer;
 import com.solvd.online.store.model.Addresses;
+import com.solvd.online.store.model.Address;
 import com.solvd.online.store.model.Categories;
 import com.solvd.online.store.model.Orders;
 import javax.xml.bind.JAXBContext;

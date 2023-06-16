@@ -5,6 +5,8 @@ import com.solvd.online.store.model.*;
 import com.solvd.online.store.service.*;
 import com.solvd.online.store.service.impl.*;
 
+import java.math.BigDecimal;
+
 public class Main {
     public static final Logger LOGGER = LogManager.getLogger(Main.class);
 
@@ -21,7 +23,7 @@ public class Main {
         orderService.saveOrderToDB(order);
 
         // create new product
-        Product product = new Product(100, "Test Product", "This is a test product", 99.99);
+        Product product = new Product(100, "Test Product", "This is a test product", new BigDecimal("99.99"));
         IProductService productService = new ProductService();
         productService.saveProductToDB(product);
 

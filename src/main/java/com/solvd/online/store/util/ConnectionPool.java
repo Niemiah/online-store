@@ -18,7 +18,7 @@ public class ConnectionPool {
 
     private ConnectionPool(){
         ds = new BasicDataSource();
-        ds.setUrl("jdbc:postgresql://localhost:5432/online_store"); // replace with your db url
+        ds.setUrl("jdbc:mysql://localhost:3306/online-store");
         ds.setUsername("db_user");
         ds.setPassword("db_password");
         ds.setMaxIdle(5);
