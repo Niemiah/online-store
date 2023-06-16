@@ -6,27 +6,29 @@ import com.solvd.online.store.service.IUserService;
 
 public class UserService implements IUserService {
 
-    @Override
-    public void saveUserToDataBase(User user) {
-        IUserDAO userDAO = new UserDAO();
-        userDAO.insert(user);
+    private IUserDAO userDAO;
+
+    public UserService() {
+        this.userDAO = new UserDAO();
     }
 
     @Override
-    public void saveUserToDB(User user) {
-        IUserDAO userDAO = new UserDAO();
+    public void saveUserToDataBase(User user) {
         userDAO.insert(user);
     }
 
     @Override
     public void updateUserInDB(User user) {
-        IUserDAO userDAO = new UserDAO();
         userDAO.update(user);
     }
 
     @Override
     public User getUserInDB(int id) {
-        IUserDAO userDAO = new UserDAO();
         return userDAO.getById(id);
+    }
+}
+    @Override
+    public String getAllUsersFromDB() {
+        return null;
     }
 }
