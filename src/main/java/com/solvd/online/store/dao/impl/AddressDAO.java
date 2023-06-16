@@ -1,4 +1,4 @@
-package com.solvd.online.store.impl;
+package com.solvd.online.store.dao.impl;
 import com.solvd.online.store.dao.IAddressDAO;
 import com.solvd.online.store.model.Address;
 import org.apache.logging.log4j.LogManager;

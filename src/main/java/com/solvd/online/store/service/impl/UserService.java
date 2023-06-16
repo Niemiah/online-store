@@ -1,6 +1,6 @@
 package com.solvd.online.store.service.impl;
 import com.solvd.online.store.dao.IUserDAO;
-import com.solvd.online.store.impl.UserDAO;
+import com.solvd.online.store.dao.impl.UserDAO;
 import com.solvd.online.store.model.User;
 import com.solvd.online.store.service.IUserService;
 

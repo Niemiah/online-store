@@ -1,6 +1,6 @@
-package com.solvd.online.store.impl;
-import com.solvd.online.store.model.Category;
-import com.solvd.online.store.dao.ICategoryDAO;
+package com.solvd.online.store.dao.impl;
+import com.solvd.online.store.model.OrderDetail;
+import com.solvd.online.store.dao.IOrderDetailDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.solvd.online.store.util.ConnectionPool;
@@ -9,24 +9,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CategoryDAO implements ICategoryDAO {
-    private final static Logger LOGGER = LogManager.getLogger(CategoryDAO.class);
-    private static final String INSERT = "INSERT INTO Category (categoryId, categoryName) VALUES (?,?)";
-    private static final String UPDATE = "UPDATE Category SET categoryName=? WHERE categoryId=?";
-    private static final String DELETE = "DELETE FROM Category WHERE categoryId=?";
-    private static final String GET = "SELECT * FROM Category WHERE categoryId=?";
+public class OrderDetailDAO implements IOrderDetailDAO {
+    private final static Logger LOGGER = LogManager.getLogger(OrderDetailDAO.class);
+    private static final String INSERT = "INSERT INTO OrderDetail (orderId, productId, shippingId, quantity) VALUES (?,?,?,?)";
+    private static final String UPDATE = "UPDATE OrderDetail SET productId=?, shippingId=?, quantity=? WHERE orderId=?";
+    private static final String DELETE = "DELETE FROM OrderDetail WHERE orderId=?";
+    private static final String GET = "SELECT * FROM OrderDetail WHERE orderId=?";
 
     @Override
-    public void insert(Category category) {
-        if(category == null){
-            LOGGER.error("Category Object is null.");
+    public void insert(OrderDetail orderDetail) {
+        if(orderDetail == null){
+            LOGGER.error("OrderDetail Object is null.");
             throw new NullPointerException();
         }
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
 
-            preparedStatement.setInt(1, category.getCategoryId());
-            preparedStatement.setString(2, category.getCategoryName());
+            preparedStatement.setInt(1, orderDetail.getOrderId());
+            preparedStatement.setInt(2, orderDetail.getProductId());
+            preparedStatement.setInt(3, orderDetail.getShippingId());
+            preparedStatement.setInt(4, orderDetail.getQuantity());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -36,16 +38,18 @@ public class CategoryDAO implements ICategoryDAO {
     }
 
     @Override
-    public void update(Category category) {
-        if(category == null){
-            LOGGER.error("Category Object is null.");
+    public void update(OrderDetail orderDetail) {
+        if(orderDetail == null){
+            LOGGER.error("OrderDetail Object is null.");
             throw new NullPointerException();
         }
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
 
-            preparedStatement.setString(1, category.getCategoryName());
-            preparedStatement.setInt(2, category.getCategoryId());
+            preparedStatement.setInt(1, orderDetail.getProductId());
+            preparedStatement.setInt(2, orderDetail.getShippingId());
+            preparedStatement.setInt(3, orderDetail.getQuantity());
+            preparedStatement.setInt(4, orderDetail.getOrderId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -69,8 +73,8 @@ public class CategoryDAO implements ICategoryDAO {
     }
 
     @Override
-    public Category getById(int id) {
-        Category category = new Category();
+    public OrderDetail getById(int id) {
+        OrderDetail orderDetail = new OrderDetail();
 
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
@@ -79,8 +83,10 @@ public class CategoryDAO implements ICategoryDAO {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()){
-                    category.setCategoryId(resultSet.getInt("categoryId"));
-                    category.setCategoryName(resultSet.getString("categoryName"));
+                    orderDetail.setOrderId(resultSet.getInt("orderId"));
+                    orderDetail.setProductId(resultSet.getInt("productId"));
+                    orderDetail.setShippingId(resultSet.getInt("shippingId"));
+                    orderDetail.setQuantity(resultSet.getInt("quantity"));
                 }
             }
 
@@ -88,6 +94,6 @@ public class CategoryDAO implements ICategoryDAO {
             LOGGER.error("Unable to obtain resource.", e);
             throw new RuntimeException(e);
         }
-        return category;
+        return orderDetail;
     }
 }

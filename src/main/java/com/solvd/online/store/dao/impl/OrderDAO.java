@@ -1,34 +1,32 @@
-package com.solvd.online.store.impl;
-import com.solvd.online.store.dao.IProductDAO;
-import com.solvd.online.store.model.Product;
-import com.solvd.online.store.util.ConnectionPool;
+package com.solvd.online.store.dao.impl;
+import com.solvd.online.store.model.Order;
+import com.solvd.online.store.dao.IOrderDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.solvd.online.store.util.ConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductDAO implements IProductDAO {
-    private final static Logger LOGGER = LogManager.getLogger(ProductDAO.class);
-    private static final String INSERT = "INSERT INTO Product (productId, productName, productDescription, productPrice) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE Product SET productName=?, productDescription=?, productPrice=? WHERE productId=?";
-    private static final String DELETE = "DELETE FROM Product WHERE productId=?";
-    private static final String GET = "SELECT * FROM Product WHERE productId=?";
+public class OrderDAO implements IOrderDAO {
+    private final static Logger LOGGER = LogManager.getLogger(OrderDAO.class);
+    private static final String INSERT = "INSERT INTO Order (orderId, userId) VALUES (?,?)";
+    private static final String UPDATE = "UPDATE Order SET userId=? WHERE orderId=?";
+    private static final String DELETE = "DELETE FROM Order WHERE orderId=?";
+    private static final String GET = "SELECT * FROM Order WHERE orderId=?";
 
     @Override
-    public void insert(Product product) {
-        if(product == null){
-            LOGGER.error("Product Object is null.");
+    public void insert(Order order) {
+        if(order == null){
+            LOGGER.error("Order Object is null.");
             throw new NullPointerException();
         }
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
 
-            preparedStatement.setInt(1, product.getProductId());
-            preparedStatement.setString(2, product.getProductName());
-            preparedStatement.setString(3, product.getProductDescription());
-            preparedStatement.setBigDecimal(4, product.getProductPrice());
+            preparedStatement.setInt(1, order.getOrderId());
+            preparedStatement.setInt(2, order.getUserId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -38,18 +36,16 @@ public class ProductDAO implements IProductDAO {
     }
 
     @Override
-    public void update(Product product) {
-        if(product == null){
-            LOGGER.error("Product Object is null.");
+    public void update(Order order) {
+        if(order == null){
+            LOGGER.error("Order Object is null.");
             throw new NullPointerException();
         }
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
 
-            preparedStatement.setString(1, product.getProductName());
-            preparedStatement.setString(2, product.getProductDescription());
-            preparedStatement.setBigDecimal(3, product.getProductPrice());
-            preparedStatement.setInt(4, product.getProductId());
+            preparedStatement.setInt(1, order.getUserId());
+            preparedStatement.setInt(2, order.getOrderId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -73,8 +69,8 @@ public class ProductDAO implements IProductDAO {
     }
 
     @Override
-    public Product getById(int id) {
-        Product product = new Product();
+    public Order getById(int id) {
+        Order order = new Order();
 
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
@@ -83,10 +79,8 @@ public class ProductDAO implements IProductDAO {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()){
-                    product.setProductId(resultSet.getInt("productId"));
-                    product.setProductName(resultSet.getString("productName"));
-                    product.setProductDescription(resultSet.getString("productDescription"));
-                    product.setProductPrice(resultSet.getBigDecimal("productPrice"));
+                    order.setOrderId(resultSet.getInt("orderId"));
+                    order.setUserId(resultSet.getInt("userId"));
                 }
             }
 
@@ -94,6 +88,6 @@ public class ProductDAO implements IProductDAO {
             LOGGER.error("Unable to obtain resource.", e);
             throw new RuntimeException(e);
         }
-        return product;
+        return order;
     }
 }

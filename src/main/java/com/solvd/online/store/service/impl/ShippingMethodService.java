@@ -1,7 +1,7 @@
 package com.solvd.online.store.service.impl;
 
 import com.solvd.online.store.dao.IShippingMethodDAO;
-import com.solvd.online.store.impl.ShippingMethodDAO;
+import com.solvd.online.store.dao.impl.ShippingMethodDAO;
 import com.solvd.online.store.service.IShippingMethodService;
 import com.solvd.online.store.model.ShippingMethod;
 

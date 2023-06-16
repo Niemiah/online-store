@@ -1,6 +1,6 @@
 package com.solvd.online.store.service.impl;
 import com.solvd.online.store.dao.IOrderDetailDAO;
-import com.solvd.online.store.impl.OrderDetailDAO;
+import com.solvd.online.store.dao.impl.OrderDetailDAO;
 import com.solvd.online.store.model.OrderDetail;
 import com.solvd.online.store.service.IOrderDetailService;
 

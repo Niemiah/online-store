@@ -1,6 +1,6 @@
 package com.solvd.online.store.service.impl;
 import com.solvd.online.store.dao.IPaymentDAO;
-import com.solvd.online.store.impl.PaymentDAO;
+import com.solvd.online.store.dao.impl.PaymentDAO;
 import com.solvd.online.store.service.IPaymentService;
 import com.solvd.online.store.model.Payment;
 

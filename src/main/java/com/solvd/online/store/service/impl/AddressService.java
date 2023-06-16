@@ -1,6 +1,6 @@
 package com.solvd.online.store.service.impl;
 import com.solvd.online.store.dao.IAddressDAO;
-import com.solvd.online.store.impl.AddressDAO;
+import com.solvd.online.store.dao.impl.AddressDAO;
 import com.solvd.online.store.service.IAddressService;
 import com.solvd.online.store.model.Address;
 

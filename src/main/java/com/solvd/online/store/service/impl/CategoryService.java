@@ -1,7 +1,7 @@
 package com.solvd.online.store.service.impl;
 import com.solvd.online.store.dao.ICategoryDAO;
 import com.solvd.online.store.model.Category;
-import com.solvd.online.store.impl.CategoryDAO;
+import com.solvd.online.store.dao.impl.CategoryDAO;
 import com.solvd.online.store.service.ICategoryService;
 
 
