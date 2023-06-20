@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.online.store.dao.IUserDAO">
+
+    <resultMap id="userResultMap" type="com.solvd.online.store.model.User">
+        <id property="userId" column="userId"/>
+        <result property="firstName" column="firstName"/>
+        <result property="lastName" column="lastName"/>
+        <result property="email" column="email"/>
+        <collection property="addresses" ofType="com.solvd.online.store.model.Address"
+                    columnPrefix="address_">
+            <id property="addressId" column="address_addressId"/>
+            <result property="address" column="address_address"/>
+            <result property="city" column="address_city"/>
+            <result property="state" column="address_state"/>
+            <result property="postalCode" column="address_postalCode"/>
+            <result property="country" column="address_country"/>
+        </collection>
+        <collection property="orders" ofType="com.solvd.online.store.model.Order"
+                    columnPrefix="order_">
+            <id property="orderId" column="order_orderId"/>
+            <result property="userId" column="order_userId"/>
+            <!-- Add more result mappings for other Order fields -->
+        </collection>
+        <collection property="payments" ofType="com.solvd.online.store.model.Payment"
+                    columnPrefix="payment_">
+            <id property="paymentId" column="payment_paymentId"/>
+            <result property="amount" column="payment_amount"/>
+            <result property="paymentDate" column="payment_paymentDate"/>
+            <!-- Add more result mappings for other Payment fields -->
+        </collection>
+        <collection property="reviews" ofType="com.solvd.online.store.model.Review"
+                    columnPrefix="review_">
+            <id property="reviewId" column="review_reviewId"/>
+            <result property="userId" column="review_userId"/>
+            <!-- Add more result mappings for other Review fields -->
+        </collection>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.solvd.online.store.model.User">
+        INSERT INTO users (userId, firstName, lastName, email)
+        VALUES (#{userId}, #{firstName}, #{lastName}, #{email})
+    </insert>
+
+    <update id="update" parameterType="com.solvd.online.store.model.User">
+        UPDATE users SET
+        firstName = #{firstName},
+        lastName = #{lastName},
+        email = #{email}
+        WHERE userId = #{userId}
+    </update>
+
+    <select id="getById" parameterType="int" resultMap="userResultMap">
+        SELECT u.userId, u.firstName, u.lastName, u.email,
+        a.addressId AS address_addressId,
+        a.address AS address_address,
+        a.city AS address_city,
+        a.state AS address_state,
+        a.postal_code AS address_postalCode,
+        a.country AS address_country,
+        o.order_id AS order_orderId,
+        o.user_id AS order_userId,
+        p.payment_id AS payment_paymentId,
+        p.amount AS payment_amount,
+        p.payment_date AS payment_paymentDate,
+        r.review_id AS review_reviewId,
+        r.user_id AS review_userId
+        FROM users u
+        LEFT JOIN addresses a ON u.userId = a.user_id
+        LEFT JOIN orders o ON u.userId = o.user_id
+        LEFT JOIN payments p ON u.userId = p.user_id
+        LEFT JOIN reviews r ON u.userId = r.user_id
+        WHERE u.userId = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM users
+        WHERE userId = #{id}
+    </delete>
+
+</mapper>

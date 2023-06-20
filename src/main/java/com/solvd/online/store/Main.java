@@ -1,51 +1,81 @@
 package com.solvd.online.store;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solvd.online.store.model.*;
 import com.solvd.online.store.service.*;
 import com.solvd.online.store.service.impl.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 
 public class Main {
-    public static final Logger LOGGER = LogManager.getLogger(Main.class);
 
-    public static void main (String[] args) {
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+    private static final String JSON_FILE_PATH = "JsonData.json";
+    private static final int TEST_ID = 100;
 
-        // creates new address
-        Address address = new Address(100, "test","Test", "Test", "0", "Test");
+    public static void main(String[] args) {
+
+        try {
+            processDatabaseOperations();
+            processJsonOperations();
+        } catch (IOException e) {
+            LOGGER.error("Error during IO operations", e);
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error occurred", e);
+        }
+    }
+
+    private static void processDatabaseOperations() {
+
+        // Creates new address
+        Address address = new Address(TEST_ID, "test", "Test", "Test", "0", "Test");
         IAddressService addressService = new AddressService();
         addressService.saveAddressToDB(address);
 
-        // create new order
-        Order order = new Order(100, 100);
+        // Create new order
+        Order order = new Order(TEST_ID, TEST_ID);
         IOrderService orderService = new OrderService();
         orderService.saveOrderToDB(order);
 
-        // create new product
-        Product product = new Product(100, "Test Product", "This is a test product", new BigDecimal("99.99"));
+        // Create new product
+        Product product = new Product(TEST_ID, "Test Product", "This is a test product", new BigDecimal("99.99"));
         IProductService productService = new ProductService();
         productService.saveProductToDB(product);
 
-        // create new shipping method
-        ShippingMethod shippingMethod = new ShippingMethod(100, "Test Method", 10.00, "3-5 days");
+        // Create new shipping method
+        ShippingMethod shippingMethod = new ShippingMethod(TEST_ID, "Test Method", 10.00, "3-5 days");
         IShippingMethodService shippingMethodService = new ShippingMethodService();
         shippingMethodService.saveShippingMethodToDB(shippingMethod);
 
-        // queries full order info
-        LOGGER.info(orderService.getOrderInDB(100));
+        // Query full order info
+        Order queriedOrder = orderService.getOrderInDB(TEST_ID);
+        LOGGER.info(queriedOrder);
 
-        // deleting info
-        addressService.deleteAddressFromDB(100);
-        orderService.deleteOrderFromDB(100);
-        productService.deleteProductFromDB(100);
-        shippingMethodService.deleteShippingMethodFromDB(100);
+        // Deleting info
+        addressService.deleteAddressFromDB(TEST_ID);
+        orderService.deleteOrderFromDB(TEST_ID);
+        productService.deleteProductFromDB(TEST_ID);
+        shippingMethodService.deleteShippingMethodFromDB(TEST_ID);
+    }
 
-        // queries all info
-        LOGGER.info(orderService.getAllOrdersFromDB());
-        LOGGER.info(productService.getAllProductsFromDB());
-        LOGGER.info(shippingMethodService.getAllShippingMethodsFromDB());
-        LOGGER.info(addressService.getAllAddressesFromDB());
+    private static void processJsonOperations() throws IOException {
 
+        Address address = new Address(1, "123 Main St", "Springfield", "IL", "62701", "USA");
+        Payment payment = new Payment(1, 12345, "4111111111111111", Date.valueOf("2023-12-31"));
+        Invoice invoice = new Invoice(1, 111, 12345, 1);
+        Inventory inventory = new Inventory(1, 999, 100);
+        Review review = new Review(1, 999, 12345, 5, "Great product!");
+
+        // Create StoreData object
+        JsonData jsonData = new JsonData(address, payment, invoice, inventory, review);
+
+        // Write the objects to a single JSON file
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File(JSON_FILE_PATH), jsonData);
     }
 }
