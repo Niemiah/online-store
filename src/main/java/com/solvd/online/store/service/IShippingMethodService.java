@@ -10,5 +10,4 @@ public interface IShippingMethodService {
 
     void deleteShippingMethodFromDB(int id);
 
-    String getAllShippingMethodsFromDB();
 }

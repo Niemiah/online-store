@@ -9,5 +9,5 @@ public interface IUserService {
 
     User getUserInDB(int id);
 
-    String getAllUsersFromDB();
+    void deleteUserFromDB(int id);
 }

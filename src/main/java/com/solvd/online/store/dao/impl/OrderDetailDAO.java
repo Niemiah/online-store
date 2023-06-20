@@ -11,19 +11,20 @@ import java.sql.SQLException;
 
 public class OrderDetailDAO implements IOrderDetailDAO {
     private final static Logger LOGGER = LogManager.getLogger(OrderDetailDAO.class);
-    private static final String INSERT = "INSERT INTO OrderDetail (orderId, productId, shippingId, quantity) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE OrderDetail SET productId=?, shippingId=?, quantity=? WHERE orderId=?";
-    private static final String DELETE = "DELETE FROM OrderDetail WHERE orderId=?";
-    private static final String GET = "SELECT * FROM OrderDetail WHERE orderId=?";
+    private static final String INSERT_QUERY = "INSERT INTO OrderDetail (orderId, productId, shippingId, quantity) VALUES (?,?,?,?)";
+    private static final String UPDATE_QUERY = "UPDATE OrderDetail SET productId=?, shippingId=?, quantity=? WHERE orderId=?";
+    private static final String DELETE_QUERY = "DELETE FROM OrderDetail WHERE orderId=?";
+    private static final String GET_QUERY = "SELECT * FROM OrderDetail WHERE orderId=?";
 
     @Override
     public void insert(OrderDetail orderDetail) {
-        if(orderDetail == null){
-            LOGGER.error("OrderDetail Object is null.");
-            throw new NullPointerException();
+        if (orderDetail == null) {
+            LOGGER.error("OrderDetail object is null.");
+            throw new IllegalArgumentException("OrderDetail object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
 
             preparedStatement.setInt(1, orderDetail.getOrderId());
             preparedStatement.setInt(2, orderDetail.getProductId());
@@ -32,19 +33,20 @@ public class OrderDetailDAO implements IOrderDetailDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void update(OrderDetail orderDetail) {
-        if(orderDetail == null){
-            LOGGER.error("OrderDetail Object is null.");
-            throw new NullPointerException();
+        if (orderDetail == null) {
+            LOGGER.error("OrderDetail object is null.");
+            throw new IllegalArgumentException("OrderDetail object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 
             preparedStatement.setInt(1, orderDetail.getProductId());
             preparedStatement.setInt(2, orderDetail.getShippingId());
@@ -53,22 +55,22 @@ public class OrderDetailDAO implements IOrderDetailDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
 
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
@@ -77,12 +79,12 @@ public class OrderDetailDAO implements IOrderDetailDAO {
         OrderDetail orderDetail = new OrderDetail();
 
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_QUERY)) {
 
             preparedStatement.setInt(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while(resultSet.next()){
+                if (resultSet.next()) {
                     orderDetail.setOrderId(resultSet.getInt("orderId"));
                     orderDetail.setProductId(resultSet.getInt("productId"));
                     orderDetail.setShippingId(resultSet.getInt("shippingId"));
@@ -92,7 +94,7 @@ public class OrderDetailDAO implements IOrderDetailDAO {
 
         } catch (SQLException e) {
             LOGGER.error("Unable to obtain resource.", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to obtain resource.", e);
         }
         return orderDetail;
     }

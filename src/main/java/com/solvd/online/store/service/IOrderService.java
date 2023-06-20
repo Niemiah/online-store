@@ -9,6 +9,4 @@ public interface IOrderService {
     Order getOrderInDB(int id);
 
     void deleteOrderFromDB(int id);
-
-    String getAllOrdersFromDB();
 }

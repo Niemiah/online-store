@@ -11,19 +11,20 @@ import java.sql.SQLException;
 
 public class UserDAO implements IUserDAO {
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
-    private static final String INSERT = "INSERT INTO User (userId, firstName, lastName, email) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE User SET firstName=?, lastName=?, email=? WHERE userId=?";
-    private static final String DELETE = "DELETE FROM User WHERE userId=?";
-    private static final String GET = "SELECT * FROM User WHERE userId=?";
+    private static final String INSERT_QUERY = "INSERT INTO `User` (userId, firstName, lastName, email) VALUES (?,?,?,?)";
+    private static final String UPDATE_QUERY = "UPDATE `User` SET firstName=?, lastName=?, email=? WHERE userId=?";
+    private static final String DELETE_QUERY = "DELETE FROM `User` WHERE userId=?";
+    private static final String GET_QUERY = "SELECT * FROM `User` WHERE userId=?";
 
     @Override
     public void insert(User user) {
-        if(user == null){
-            LOGGER.error("User Object is null.");
-            throw new NullPointerException();
+        if (user == null) {
+            LOGGER.error("User object is null.");
+            throw new IllegalArgumentException("User object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
 
             preparedStatement.setInt(1, user.getUserId());
             preparedStatement.setString(2, user.getFirstName());
@@ -32,19 +33,20 @@ public class UserDAO implements IUserDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void update(User user) {
-        if(user == null){
-            LOGGER.error("User Object is null.");
-            throw new NullPointerException();
+        if (user == null) {
+            LOGGER.error("User object is null.");
+            throw new IllegalArgumentException("User object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
@@ -53,22 +55,22 @@ public class UserDAO implements IUserDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
 
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
@@ -77,12 +79,12 @@ public class UserDAO implements IUserDAO {
         User user = new User();
 
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_QUERY)) {
 
             preparedStatement.setInt(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while(resultSet.next()){
+                if (resultSet.next()) {
                     user.setUserId(resultSet.getInt("userId"));
                     user.setFirstName(resultSet.getString("firstName"));
                     user.setLastName(resultSet.getString("lastName"));
@@ -92,7 +94,7 @@ public class UserDAO implements IUserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("Unable to obtain resource.", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to obtain resource.", e);
         }
         return user;
     }

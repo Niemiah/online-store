@@ -11,19 +11,20 @@ import java.sql.SQLException;
 
 public class PaymentDAO implements IPaymentDAO {
     private final static Logger LOGGER = LogManager.getLogger(PaymentDAO.class);
-    private static final String INSERT = "INSERT INTO Payment (paymentId, userId, cardNumber, expirationDate) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE Payment SET userId=?, cardNumber=?, expirationDate=? WHERE paymentId=?";
-    private static final String DELETE = "DELETE FROM Payment WHERE paymentId=?";
-    private static final String GET = "SELECT * FROM Payment WHERE paymentId=?";
+    private static final String INSERT_QUERY = "INSERT INTO Payment (paymentId, userId, cardNumber, expirationDate) VALUES (?,?,?,?)";
+    private static final String UPDATE_QUERY = "UPDATE Payment SET userId=?, cardNumber=?, expirationDate=? WHERE paymentId=?";
+    private static final String DELETE_QUERY = "DELETE FROM Payment WHERE paymentId=?";
+    private static final String GET_QUERY = "SELECT * FROM Payment WHERE paymentId=?";
 
     @Override
     public void insert(Payment payment) {
-        if(payment == null){
-            LOGGER.error("Payment Object is null.");
-            throw new NullPointerException();
+        if (payment == null) {
+            LOGGER.error("Payment object is null.");
+            throw new IllegalArgumentException("Payment object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
 
             preparedStatement.setInt(1, payment.getPaymentId());
             preparedStatement.setInt(2, payment.getUserId());
@@ -32,19 +33,20 @@ public class PaymentDAO implements IPaymentDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void update(Payment payment) {
-        if(payment == null){
-            LOGGER.error("Payment Object is null.");
-            throw new NullPointerException();
+        if (payment == null) {
+            LOGGER.error("Payment object is null.");
+            throw new IllegalArgumentException("Payment object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 
             preparedStatement.setInt(1, payment.getUserId());
             preparedStatement.setString(2, payment.getCardNumber());
@@ -53,22 +55,22 @@ public class PaymentDAO implements IPaymentDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
 
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
@@ -77,12 +79,12 @@ public class PaymentDAO implements IPaymentDAO {
         Payment payment = new Payment();
 
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_QUERY)) {
 
-            preparedStatement.setLong(1, id);
+            preparedStatement.setInt(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while(resultSet.next()){
+                if (resultSet.next()) {
                     payment.setPaymentId(resultSet.getInt("paymentId"));
                     payment.setUserId(resultSet.getInt("userId"));
                     payment.setCardNumber(resultSet.getString("cardNumber"));
@@ -92,7 +94,7 @@ public class PaymentDAO implements IPaymentDAO {
 
         } catch (SQLException e) {
             LOGGER.error("Unable to obtain resource.", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to obtain resource.", e);
         }
         return payment;
     }

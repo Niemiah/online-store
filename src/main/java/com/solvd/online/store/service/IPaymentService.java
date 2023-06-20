@@ -10,5 +10,4 @@ public interface IPaymentService {
 
     void deletePaymentFromDB(int id);
 
-    String getAllPaymentsFromDB();
 }

@@ -10,5 +10,4 @@ public interface IProductService {
 
     void deleteProductFromDB(int id);
 
-    String getAllProductsFromDB();
 }

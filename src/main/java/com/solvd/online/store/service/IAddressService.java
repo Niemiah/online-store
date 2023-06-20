@@ -9,6 +9,4 @@ public interface IAddressService {
     Address getAddressInDB(int id);
 
     void deleteAddressFromDB(int id);
-
-    String getAllAddressesFromDB();
 }

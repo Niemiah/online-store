@@ -11,19 +11,20 @@ import java.sql.SQLException;
 
 public class ShippingMethodDAO implements IShippingMethodDAO {
     private final static Logger LOGGER = LogManager.getLogger(ShippingMethodDAO.class);
-    private static final String INSERT = "INSERT INTO ShippingMethod (shippingId, methodName, shippingCost, shippingTime) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE ShippingMethod SET methodName=?, shippingCost=?, shippingTime=? WHERE shippingId=?";
-    private static final String DELETE = "DELETE FROM ShippingMethod WHERE shippingId=?";
-    private static final String GET = "SELECT * FROM ShippingMethod WHERE shippingId=?";
+    private static final String INSERT_QUERY = "INSERT INTO ShippingMethod (shippingId, methodName, shippingCost, shippingTime) VALUES (?,?,?,?)";
+    private static final String UPDATE_QUERY = "UPDATE ShippingMethod SET methodName=?, shippingCost=?, shippingTime=? WHERE shippingId=?";
+    private static final String DELETE_QUERY = "DELETE FROM ShippingMethod WHERE shippingId=?";
+    private static final String GET_QUERY = "SELECT * FROM ShippingMethod WHERE shippingId=?";
 
     @Override
     public void insert(ShippingMethod shippingMethod) {
-        if(shippingMethod == null){
-            LOGGER.error("ShippingMethod Object is null.");
-            throw new NullPointerException();
+        if (shippingMethod == null) {
+            LOGGER.error("ShippingMethod object is null.");
+            throw new IllegalArgumentException("ShippingMethod object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
 
             preparedStatement.setInt(1, shippingMethod.getShippingId());
             preparedStatement.setString(2, shippingMethod.getMethodName());
@@ -32,19 +33,20 @@ public class ShippingMethodDAO implements IShippingMethodDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void update(ShippingMethod shippingMethod) {
-        if(shippingMethod == null){
-            LOGGER.error("ShippingMethod Object is null.");
-            throw new NullPointerException();
+        if (shippingMethod == null) {
+            LOGGER.error("ShippingMethod object is null.");
+            throw new IllegalArgumentException("ShippingMethod object is null.");
         }
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 
             preparedStatement.setString(1, shippingMethod.getMethodName());
             preparedStatement.setDouble(2, shippingMethod.getShippingCost());
@@ -53,22 +55,22 @@ public class ShippingMethodDAO implements IShippingMethodDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
 
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute Prepared Statement.", e);
-            throw new RuntimeException(e);
+            LOGGER.error("Unable to execute prepared statement.", e);
+            throw new RuntimeException("Unable to execute prepared statement.", e);
         }
     }
 
@@ -77,12 +79,12 @@ public class ShippingMethodDAO implements IShippingMethodDAO {
         ShippingMethod shippingMethod = new ShippingMethod();
 
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_QUERY)) {
 
             preparedStatement.setInt(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while(resultSet.next()){
+                if (resultSet.next()) {
                     shippingMethod.setShippingId(resultSet.getInt("shippingId"));
                     shippingMethod.setMethodName(resultSet.getString("methodName"));
                     shippingMethod.setShippingCost(resultSet.getDouble("shippingCost"));
@@ -92,7 +94,7 @@ public class ShippingMethodDAO implements IShippingMethodDAO {
 
         } catch (SQLException e) {
             LOGGER.error("Unable to obtain resource.", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to obtain resource.", e);
         }
         return shippingMethod;
     }
